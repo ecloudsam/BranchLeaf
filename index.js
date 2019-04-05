@@ -4,6 +4,8 @@ import React, { Component } from 'react'
 import { createStore } from 'redux'
 import { Provider, connect } from 'react-redux'
 
+// React部分
+
 // 计数器组件
 class Counter extends Component {
   render() {
@@ -23,12 +25,20 @@ Counter.propTypes = {
 
 
 
+
+
+
+// Redux部分
+
 // 重做什么 whatToRedo
 const increase = { type: 'increase' }
 
 // 如何重做 howToRedo
 function howToRedo(material = { count: 0 }, whatToRedo) {
   const count = material.count
+  if (!material) {
+    material = count
+  }
   switch (whatToRedo.type) {
     case 'increase':
       return { count: count + 1 }
@@ -42,14 +52,19 @@ const store = createStore(howToRedo)
 
 
 
-// 将原料从仓库传给门店
+
+
+
+// React-Redux部分
+
+// 将原料从仓库发至门店
 function storeToShop(material) {
   return {
     value: material.count
   }
 }
 
-// 将重做从门店传给仓库
+// 将重做从门店发至仓库
 function shopToStore(redo) {
   return {
     onIncreaseClick: () => redo(increase)
@@ -57,12 +72,14 @@ function shopToStore(redo) {
 }
 
 // 链接
-const App = connect(
-  storeToShop,
-  shopToStore
-)(Counter)
+const App = connect(storeToShop, shopToStore)(Counter)
 
 
+
+
+
+
+// ReactDOM部分
 
 // 开店
 ReactDOM.render(
