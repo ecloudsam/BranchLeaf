@@ -12,20 +12,23 @@ import { Provider, connect } from 'react-redux'
 // React部分
 
 // 计数器组件
-class Counter extends Component {
+class Fashion extends Component {
   render() {
-    const { value, onIncreaseClick } = this.props
+    const { numberAtShop, onClickIncrease, colorAtShop, onClickRed } = this.props
     return (
       <div>
-        <span> {value} </span>
-        <button onClick={onIncreaseClick}> +1 </button>
+        <h1 style={ {color: colorAtShop} }> {numberAtShop} </h1>
+        <button onClick={onClickIncrease}> +1 </button>
+        <button onClick={onClickRed}> Red </button>
       </div>
     )
   }
 }
-Counter.propTypes = {
-  value: PropTypes.number.isRequired,
-  onIncreaseClick: PropTypes.func.isRequired
+Fashion.propTypes = {
+  numberAtShop: PropTypes.number.isRequired,
+  onClickIncrease: PropTypes.func.isRequired,
+  colorAtShop: PropTypes.string.isRequired,
+  onClickRed: PropTypes.func.isRequired,
 }
 
 
@@ -37,16 +40,20 @@ Counter.propTypes = {
 
 // 重做什么 whatToRedo
 const increase = { type: 'increase' }
+const red = { type: 'red' }
 
 // 如何重做 howToRedo
-function howToRedo(material = { count: 0 }, whatToRedo) {
-  const count = material.count
+function howToRedo(material = { number: 0, color: 'blue' }, whatToRedo) {
+  const number = material.number
+  const color = material.color
   if (!material) {
-    material = count
+    material = { number, color }
   }
   switch (whatToRedo.type) {
     case 'increase':
-      return { count: count + 1 }
+      return { number: number + 1, color }
+    case 'red':
+      return { number, color: 'red' }
     default:
       return material
   }
@@ -65,26 +72,21 @@ const store = createStore(howToRedo)
 // 将原料从仓库发至门店
 function storeToShop(material) {
   return {
-    value: material.count
+    numberAtShop: material.number,
+    colorAtShop: material.color,
   }
 }
 
 // 将重做从门店发至仓库
 function shopToStore(redo) {
   return {
-    onIncreaseClick: () => redo(increase)
+    onClickIncrease: () => redo(increase),
+    onClickRed: () => redo(red),
   }
 }
 
 // 链接
-const App = connect(storeToShop, shopToStore)(Counter)
-
-
-
-
-
-
-// ReactDOM部分
+const App = connect(storeToShop, shopToStore)(Fashion)
 
 // 开店
 ReactDOM.render(
