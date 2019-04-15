@@ -86,7 +86,7 @@ function shopToFactory(redo) {
 }
 
 // 链接
- export default CounterApp = connect(factoryToShop, shopToFactory)(CounterApp);
+export default CounterApp = connect(factoryToShop, shopToFactory)(CounterApp);
 
 
 
@@ -100,3 +100,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 )
+
