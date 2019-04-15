@@ -10,21 +10,20 @@ import { Provider, connect } from 'react-redux'
 
 
 // React部分
-
-// 计数器组件
-class Fashion extends Component {
+// 门店组件
+class CounterApp extends Component {
   render() {
     const { numberAtShop, onClickIncrease, colorAtShop, onClickRed } = this.props
     return (
       <div>
-        <h1 style={ {color: colorAtShop} }> {numberAtShop} </h1>
+        <h1 style={{ color: colorAtShop }}> {numberAtShop} </h1>
         <button onClick={onClickIncrease}> +1 </button>
         <button onClick={onClickRed}> Red </button>
       </div>
     )
   }
 }
-Fashion.propTypes = {
+CounterApp.propTypes = {
   numberAtShop: PropTypes.number.isRequired,
   onClickIncrease: PropTypes.func.isRequired,
   colorAtShop: PropTypes.string.isRequired,
@@ -37,6 +36,7 @@ Fashion.propTypes = {
 
 
 // Redux部分
+// 工厂组件
 
 // 重做什么 whatToRedo
 const increase = { type: 'increase' }
@@ -66,19 +66,19 @@ const store = createStore(howToRedo)
 
 
 
-
 // React-Redux部分
+// 物流组件
 
-// 将原料从仓库发至门店
-function storeToShop(material) {
+// 将物料从工厂发至门店
+function factoryToShop(material) {
   return {
     numberAtShop: material.number,
     colorAtShop: material.color,
   }
 }
 
-// 将重做从门店发至仓库
-function shopToStore(redo) {
+// 将重制从门店发至工厂
+function shopToFactory(redo) {
   return {
     onClickIncrease: () => redo(increase),
     onClickRed: () => redo(red),
@@ -86,12 +86,17 @@ function shopToStore(redo) {
 }
 
 // 链接
-const App = connect(storeToShop, shopToStore)(Fashion)
+ export default CounterApp = connect(factoryToShop, shopToFactory)(CounterApp);
+
+
+
+
+
 
 // 开店
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <CounterApp />
   </Provider>,
   document.getElementById('root')
 )
